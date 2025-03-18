@@ -90,13 +90,21 @@ tr {
   color: white;
 }
 
+th, td {
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds "..." when text overflows */
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+
 tbody tr:nth-child(odd) {
   background-color: #333333;
 }
 
 .candbox {
   background-color: black;
-  border-radius: 50px;
+  border-radius: 50px 50px 20px 20px;
+  margin: 0px 0px 50px 0px;
+  max-width: 420px;
 }
 
 .nav {
@@ -126,9 +134,36 @@ tbody tr:nth-child(odd) {
 }
 
 #candimg {
-  border-radius: 50px;
+  border-radius: 50px 50px 0px 0px;
+  width: 420px;
+  height: 420px;
+}
+#cand-text {
+  padding: 0px 10px 10px 10px; /* top right bottom left */
 }
 
 #table-img {
-  max-width: 50px;
+  max-width: 50%;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+}
+
+#table-button {
+  display: block;
+  margin: 0 auto;
+}
+
+#td-bio {
+  word-wrap: break-word; /* Ensures long words break */
+  white-space: normal; /* Allows text to wrap */
+  overflow: hidden; /* Prevents overflow */
+  max-height: 2em; /* Limits how many lines the text can take */
+  line-height: 1.2em; /* Adjusts line spacing */
+  vertical-align: center;
+}
+
+#button-div {
+  display: flex;
+  justify-content: space-between;
 }

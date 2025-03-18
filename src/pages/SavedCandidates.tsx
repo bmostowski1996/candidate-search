@@ -28,6 +28,7 @@ const SavedCandidates = () => {
   return (
     <>
       <h1>Potential Candidates</h1>
+      {(candidateList.length <= 0) ? <h2> There are no candidates to display</h2> :
       <table className='table'>
         <thead>
           <tr>
@@ -42,16 +43,16 @@ const SavedCandidates = () => {
         </thead>
         <tbody>
           {candidateList.map((candidate, index) => {return <tr key={index}>
-            <td><img id='table-img' src={candidate.avatar_url}></img></td>
+            <td id='img-container'><img id='table-img' src={candidate.avatar_url}></img></td>
             <td>{candidate.login}</td>
             <td>{candidate.location || 'None provided'}</td>
             <td>{candidate.email || 'None provided'}</td>
             <td>{candidate.company || 'None specified'}</td>
-            <td>{candidate.bio || 'None provided'}</td>
-            <td><button onClick={() => rejectCandidate(index)}>-</button></td>
+            <td id='td-bio'>{candidate.bio || 'None provided'}</td>
+            <td><button id='table-button' onClick={() => rejectCandidate(index)}>-</button></td>
           </tr>})}
         </tbody>
-      </table>
+      </table>}
     </>
   );
 };
