@@ -14,7 +14,7 @@ const CandidateSearch = () => {
     const fetchData = async () => {
       const result = await searchGithub();
       let ind = 0;
-      let userInfo: Candidate; 
+      let userInfo!: Candidate; 
       while (!validUser && (ind < result.length)) {
         const username = result[ind].login;
         userInfo = await searchGithubUser(username) as Candidate;
