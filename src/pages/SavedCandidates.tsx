@@ -49,7 +49,7 @@ const SavedCandidates = () => {
             <td>{candidate.email || 'None provided'}</td>
             <td>{candidate.company || 'None specified'}</td>
             <td id='td-bio'>{candidate.bio || 'None provided'}</td>
-            <td><button id='table-button' onClick={() => rejectCandidate(index)}>-</button></td>
+            <td><button id='table-button' onClick={() => rejectCandidate(index)}><img src='./images/reject.png'></img></button></td>
           </tr>})}
         </tbody>
       </table>}

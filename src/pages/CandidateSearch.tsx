@@ -6,13 +6,13 @@ const CandidateSearch = () => {
   // const users = await searchGithub();
   // console.log(users);
   const [userInfo, setUserInfo] = useState<Candidate>({} as Candidate);
+  const [validUser, setValidUser] = useState<boolean>(false);
+  const [finishedSearching, setFinishedSearching] = useState<boolean>(false);
   
   // This useEffect will get called immediately when we load the page
   useEffect(() => {
     const fetchData = async () => {
       const result = await searchGithub();
-
-      let validUser = false;
       let ind = 0;
       let userInfo: Candidate; 
       while (!validUser && (ind < result.length)) {
@@ -23,11 +23,16 @@ const CandidateSearch = () => {
         // I'm not only requiring that we find a user, but that the user has an email and bio
         if ((Object.keys(userInfo).length > 0) && (userInfo.email !== null)) {
           console.log(`Found valid user! Their email is as follows: ${userInfo.email}`);
-          validUser = true;
+          setValidUser(true);
           break;
         } else {
           ind++;
         }
+      }
+
+      setFinishedSearching(true); 
+      if (!validUser) {
+        console.log(`Could not find user.`)
       }
 
       if (userInfo.bio && userInfo.bio.length > 100) {
@@ -53,28 +58,45 @@ const CandidateSearch = () => {
     window.location.reload();
   }
 
-  return (<>
-  <h1>Candidate Search</h1>
-    <div>
-      {Object.keys(userInfo).length > 0 ? 
-      <><div className='candbox'>
+  const renderContent = () => {
+    console.log('Rendering...');
+    console.log(`validUser: ${validUser}`)
+    if (validUser) {
+      // In this case, the website found a valid user
+      return <>
+      <div className='candbox'>
         <a href={userInfo.html_url}><img id='candimg' src={userInfo.avatar_url}></img></a>
         <div id='cand-text'>
           <h2>{userInfo.login}</h2>
-          {userInfo.location && <p>Location: {userInfo.location}</p>}
-          {userInfo.email && <p>Email: <a href={userInfo.email as string}>{userInfo.email}</a> </p>}
-          {userInfo.company && <p>Company: {userInfo.company}</p>}
-          {userInfo.bio && <p>Bio: {userInfo.bio}</p>}
+          {userInfo.location ? <p>Location: {userInfo.location}</p> : <p> Location: None provided</p>}
+          {userInfo.email ? <p>Email: <a href={`mailto:${userInfo.email}`}>{userInfo.email}</a> </p> : <p> Email: None provided</p>}
+          {userInfo.company ? <p>Company: {userInfo.company}</p> : <p> Company: None specified</p>}
+          {userInfo.bio ? <p>Bio: {userInfo.bio}</p> : <p> Bio: None provided</p>}
         </div>
       </div>
 
       <div id='button-div'>
-        <button onClick={addCandidate}>+</button>
-        <button onClick={skipCandidate}>-</button>
+        <button onClick={addCandidate}><img src="./images/accept.png"></img></button>
+        <button onClick={skipCandidate}><img src="./images/reject.png"></img></button>
       </div>
-      </> : <h2>Searching for candidates...</h2>
-      }
-    </div>
+    </>
+    } else if (finishedSearching) {
+      // In this case, our website searched through the API call and didn't find any suitable users.
+      return <>
+      <h2>No suitable candidates available to display!</h2>
+      <p>Try refreshing the page</p>
+      </>
+    } else {
+      // In this case, our website is still searching the API call for suitable users.
+      return <>
+      <h2>Searching for candidates...</h2>
+      </>
+    }
+  }
+
+  return (<>
+  <h1>Candidate Search</h1>
+    <div>{renderContent()}</div>
   </>
   );
 };
